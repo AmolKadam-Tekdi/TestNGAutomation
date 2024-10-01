@@ -5,7 +5,7 @@
             <class name="Tests.LoginTest"/>
             <class name="Tests.LoginTest1"/>
             <class name="Tests.LoginTest2"/>
-            <class name="Tests.LoginTest3"></class>
+            <class name="Tests.LoginTest3"/>
         </classes>
     </test>
 </suite>
