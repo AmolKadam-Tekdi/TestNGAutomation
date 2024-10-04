@@ -26,7 +26,7 @@ public class LoginTest1 extends BaseTest {
 
 
         logStep("Enter password");
-        assertTrue("password field is enabled", egl.isEnabled("passwordField"),"password field is not enablled");
+        assertTrue("password field is enableddd", egl.isEnabled("passwordField"),"password field is not enablled");
         egl.enterPassword(password);
 
 
