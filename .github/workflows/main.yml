@@ -48,6 +48,3 @@ jobs:
         with:
           name: extent-reports
           path: target/extent-reports/  # Adjust this path to your reports folder
-=======
-
->>>>>>> 7e772a6c7bc108f1afe0e73ae1310678cb5945a0
