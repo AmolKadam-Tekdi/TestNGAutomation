@@ -152,7 +152,7 @@ jobs:
         run: |
           echo "REPORT_PATH=$(pwd)/Reports" >> $GITHUB_ENV
 
-      # Step 7: Send email with report URL
+      # Step 7: Send email with TestNG Extent Reports
       - name: Send email with TestNG Extent Reports
         if: always()  # Ensure this step runs whether the build succeeds or fails
         uses: dawidd6/action-send-mail@v3
@@ -164,17 +164,16 @@ jobs:
           subject: "TestNG Automation Report - Build ${{ github.run_number }}: ${{ job.status }}"
           body: |
             Hello,
-
+            
             The TestNG Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
-
-            The report can be found at the following location: 
-            ${{ env.REPORT_PATH }}
-
+            
+            Please find the attached Extent Reports.
+            
             Regards,
             CI System
           to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
           from: CI System <testngautomationtest@gmail.com>
-
+          attachments: ${{ env.REPORT_PATH }}/*.html  # Attach all HTML reports in the Reports directory
 
 
 
