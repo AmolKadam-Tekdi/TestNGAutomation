@@ -146,12 +146,47 @@ jobs:
       - name: Run TestNG tests
         run: mvn test
 
+#      # Step 6: Upload TestNG Extent Reports
+#      - name: Upload TestNG Extent Reports
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: extent-reports
+#          path: Reports/**  # Ensure this path matches the actual path of the Extent Report
+#
+#      # Step 7: Send email with TestNG Extent Reports (Runs on both success and failure)
+#      - name: Send email with TestNG Extent Reports
+#        if: always()  # Ensure this step runs whether the build succeeds or fails
+#        uses: dawidd6/action-send-mail@v3
+#        with:
+#          server_address: smtp.gmail.com
+#          server_port: 465
+#          username: ${{ secrets.EMAIL_USERNAME }}   # Set up as a secret in GitHub
+#          password: ${{ secrets.EMAIL_PASSWORD }}   # Set up as a secret in GitHub
+#          subject: "TestNG Automation Report - Build ${{ github.run_number }}: ${{ job.status }}"
+#          body: |
+#            Hello,
+#
+#            The Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
+#
+#            Please find the attached Extent Reports.
+#
+#            Regards,
+#            Amol K
+#          to: amol.kadam@tekditechnologies.com, vishal_c@tekditechnologies.com  # Replace with actual recipient email
+#          from: CI System <testngautomationtest@gmail.com>
+#          attachments: Reports/TestSuite.html  # Ensure this is the correct path to the report file
+
+
       # Step 6: Upload TestNG Extent Reports
       - name: Upload TestNG Extent Reports
         uses: actions/upload-artifact@v3
         with:
           name: extent-reports
-          path: Reports/**  # Ensure this path matches the actual path of the Extent Report
+          path: Reports
+
+      # Optional: Debug: List generated report files
+      - name: List generated report files
+        run: ls -la ${{ github.workspace }}/Reports/
 
       # Step 7: Send email with TestNG Extent Reports (Runs on both success and failure)
       - name: Send email with TestNG Extent Reports
@@ -166,12 +201,12 @@ jobs:
           body: |
             Hello,
 
-            The Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
+            The TestNG Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
 
             Please find the attached Extent Reports.
-            
+
             Regards,
-            Amol K
-          to: amol.kadam@tekditechnologies.com, vishal_c@tekditechnologies.com  # Replace with actual recipient email
+            CI System
+          to: "amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com"  # Replace with actual recipient emails
           from: CI System <testngautomationtest@gmail.com>
-          attachments: Reports/TestSuite.html  # Ensure this is the correct path to the report file
+          attachments: ${{ github.workspace }}/Reports/*  # Use wildcard to attach all reports in the Reports directory
