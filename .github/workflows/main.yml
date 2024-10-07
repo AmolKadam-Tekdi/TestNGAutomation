@@ -51,6 +51,58 @@
 
 
 
+#name: Selenium TestNG CI
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#  pull_request:
+#    branches:
+#      - main
+#
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      # Step 1: Checkout the code
+#      - name: Checkout repository
+#        uses: actions/checkout@v2
+#
+#      # Step 2: Set up JDK 16 (Ensure you are using Java 16)
+#      - name: Set up JDK 16
+#        uses: actions/setup-java@v2
+#        with:
+#          distribution: 'adopt'
+#          java-version: '16'
+#
+#      # Step 3: Cache Maven dependencies for faster builds
+#      - name: Cache Maven dependencies
+#        uses: actions/cache@v2
+#        with:
+#          path: ~/.m2
+#          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: |
+#            ${{ runner.os }}-maven-
+#
+#      # Step 4: Install Maven dependencies
+#      - name: Install dependencies
+#        run: mvn install -DskipTests
+#
+#      # Step 5: Run TestNG tests
+#      - name: Run TestNG tests
+#        run: mvn test
+#
+#      # Step 6: Upload Extent Reports
+#      - name: Upload TestNG Extent Reports
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: extent-reports
+#          path: Reports
+
+
+
 name: Selenium TestNG CI
 
 on:
@@ -94,9 +146,34 @@ jobs:
       - name: Run TestNG tests
         run: mvn test
 
-      # Step 6: Upload Extent Reports
+      # Step 6: Upload TestNG Extent Reports
       - name: Upload TestNG Extent Reports
         uses: actions/upload-artifact@v3
         with:
           name: extent-reports
           path: Reports
+
+      # Step 7: Send email with TestNG Extent Reports (Runs on both success and failure)
+      - name: Send email with TestNG Extent Reports
+        if: always()  # Ensure this step runs whether the build succeeds or fails
+        uses: mikepenz/send-mail-action@v1.5.0
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}   # Set up as a secret in GitHub
+          password: ${{ secrets.EMAIL_PASSWORD }}   # Set up as a secret in GitHub
+          subject: "TestNG Automation Report - Build ${{ github.run_number }}: ${{ job.status }}"
+          body: |
+            Hello,
+
+            The TestNG Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
+
+            Please find the attached Extent Reports.
+
+            Regards,
+            CI System
+          to: "amol.kadam@tekditechnologies.com"  # Change to recipient's email address
+          from: "CI System <testngautomationtest@gmail.com>"
+          content_type: text/html
+          attachments: Reports   # Path to your Extent Report file
+
