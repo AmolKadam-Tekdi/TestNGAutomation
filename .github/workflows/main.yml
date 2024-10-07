@@ -142,42 +142,40 @@ jobs:
       - name: Install dependencies
         run: mvn install -DskipTests
 
-      # Step 5: Clean previous reports to avoid old reports being sent
-      - name: Clean Reports Directory
+      # Step 5: Clean Reports Directory (temporary storage)
+      - name: Clean Temp Reports Directory
         run: |
-          if [ -d "Reports" ]; then
-            rm -rf Reports/*
-            echo "Old reports cleaned."
+          if [ -d "/tmp/reports" ]; then
+            rm -rf /tmp/reports/*
+            echo "Old temporary reports cleaned."
           else
-            echo "No previous reports directory found."
+            mkdir -p /tmp/reports
+            echo "Created temporary reports directory."
           fi
 
-      # Step 6: Run Tests and Generate Reports
+      # Step 6: Run Tests and Generate Reports into Temporary Directory
       - name: Run Tests
-        run: mvn test
-
-      # Step 7: Check Reports Directory after tests run
-      - name: Check Reports Directory
         run: |
-          ls -la Reports
-          if [ -d "Reports" ]; then
-            echo "Reports directory exists."
+          mvn test -DoutputDirectory=/tmp/reports  # Ensuring the reports go into /tmp/reports
+
+      # Step 7: Check Temporary Reports Directory
+      - name: Check Reports in Temporary Directory
+        run: |
+          ls -la /tmp/reports
+          if [ -d "/tmp/reports" ]; then
+            echo "Temporary reports directory exists with the following contents:"
+            ls /tmp/reports
           else
-            echo "Reports directory does not exist. Test execution might have failed."
+            echo "Reports directory not found!"
             exit 1
           fi
 
-      # Step 8: Set the report path for later use in emails
-      - name: Set report path
-        id: set_report_path
+      # Step 8: Move Reports to Final Path for Sending
+      - name: Move Reports to Final Path
         run: |
-          REPORT_DIR=$(pwd)/Reports
-          if [ -d "$REPORT_DIR" ]; then
-            echo "REPORT_PATH=$REPORT_DIR" >> $GITHUB_ENV
-          else
-            echo "No reports directory found!"
-            exit 1
-          fi
+          mv /tmp/reports/* $(pwd)/Reports/
+          echo "REPORT_PATH=$(pwd)/Reports" >> $GITHUB_ENV
+          echo "Reports moved to final directory."
 
       # Step 9: Upload reports as artifacts for manual download (optional)
       - name: Upload TestNG Reports as Artifact
@@ -208,7 +206,6 @@ jobs:
           to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
           from: CI System <testngautomationtest@gmail.com>
           attachments: ${{ env.REPORT_PATH }}/*.html  # Attach all HTML reports in the Reports directory
-
 
 
 
