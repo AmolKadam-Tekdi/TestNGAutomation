@@ -14,20 +14,38 @@ import java.lang.reflect.Method;
 public class BaseTest extends BrowserManager
 {
 
+
     private static boolean isSuiteInitialized = false;
+    private static ExtentReports extent;
+    private static ExtentTest suiteTest;
+
 
     @BeforeSuite
     public void setUpSuite(ITestContext context) throws Exception {
         if (!isSuiteInitialized) {
             ExtentReports extent = new ExtentReports();
-            ExtentTest test = extent.createTest("TestSuite");
+            extent.createTest("TestSuite");
 
             String suiteName = context.getSuite().getName();  // Get the suite name
             Reporter.setupReport();
             isSuiteInitialized = true;
-            logStep("Running the Test Suite" + suiteName);
+            logStep("Running the Test Suite : " + suiteName);
         }
     }
+
+
+
+
+//    private static boolean isSuiteInitialized = false;
+//
+//    @BeforeSuite
+//    public void setUpSuite(ITestContext context) throws Exception {
+//        if (!isSuiteInitialized) {
+//            String suiteName = context.getSuite().getName();  // Get the suite name
+//            Reporter.setupReport(suiteName);
+//            isSuiteInitialized = true;
+//        }
+//    }
 
     @BeforeMethod(alwaysRun = true)
     @Parameters("localOrRemote")

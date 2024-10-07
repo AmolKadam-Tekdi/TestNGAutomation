@@ -34,6 +34,7 @@ public class Reporter {
 	private static ExtentTest test;
 	static String timestamp = new SimpleDateFormat("ddMMyyyy_HHmmss").format(new Date());
 
+//	String suiteName
 
 	public static void setupReport() {
 //		filename = filename + "_" + timestamp;
