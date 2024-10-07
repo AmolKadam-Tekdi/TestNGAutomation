@@ -19,9 +19,9 @@ public class BaseTest extends BrowserManager
         if (!isSuiteInitialized) {
 
             String suiteName = context.getSuite().getName();  // Get the suite name
-            Reporter.setupReport(suiteName);
-            logStep("Running the Test Suite" + suiteName);
+            Reporter.setupReport();
             isSuiteInitialized = true;
+            logStep("Running the Test Suite" + suiteName);
         }
     }
 

@@ -34,41 +34,22 @@ public class Reporter {
 	private static ExtentTest test;
 	static String timestamp = new SimpleDateFormat("ddMMyyyy_HHmmss").format(new Date());
 
-	/**
-	 * Sets up the report with the specified filename.
-	 *
-	 * @param filename The name of the report file.
-	 */
-	public static void setupReport(String filename) {
-		// Naming file with timestamp( Runtime )
-		filename = filename + "_" + timestamp;
 
-		// ParentDirectory -where screen shot get stored
-		// Specify the report
+	public static void setupReport() {
+//		filename = filename + "_" + timestamp;
+
 		String parentDirectory = System.getProperty("user.dir") + File.separator + "reports"
 				+ File.separator;
 
-		// calling method to create new dir every run into parent dir
 		createDirectory(parentDirectory);
-
-		// Create an oject using extent reporter for creating report into html format
 
 		ExtentSparkReporter report = new ExtentSparkReporter(
 				parentDirectory +  "TestSuite.html");
-//		File.separator + timestamp + File.separator + filename +
 		report.config().setTheme(Theme.STANDARD);
-		// Initialize ExtentReports and attach the ExtentSparkReporter
 
 		extent = new ExtentReports();
 		extent.attachReporter(report);
 	}
-
-	/**
-	 * Creates a new test with the provided test name. used for naming the test to
-	 * identify into report
-	 *
-	 * @param testName The name of the test.
-	 */
 
 	public static void createTest(String testName) {
 		test = extent.createTest(testName);
