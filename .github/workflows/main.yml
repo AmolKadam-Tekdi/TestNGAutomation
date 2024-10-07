@@ -160,8 +160,8 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: ${{ testngautomationtest@gmail.com }}   # Set up as a secret in GitHub
-          password: ${{ MyPassword@3232# }}   # Set up as a secret in GitHub
+          username: ${{ secrets.EMAIL_USERNAME }}   # Set up as a secret in GitHub
+          password: ${{ secrets.EMAIL_PASSWORD }}   # Set up as a secret in GitHub
           subject: "TestNG Automation Report - Build ${{ github.run_number }}: ${{ job.status }}"
           body: |
             Hello,
