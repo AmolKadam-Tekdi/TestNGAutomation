@@ -142,7 +142,7 @@ jobs:
       - name: Install dependencies
         run: mvn install -DskipTests
 
-      # Step 5: Clean Reports Directory (temporary storage)
+      # Step 4: Clean Temporary Reports Directory
       - name: Clean Temp Reports Directory
         run: |
           if [ -d "/tmp/reports" ]; then
@@ -153,38 +153,36 @@ jobs:
             echo "Created temporary reports directory."
           fi
 
-      # Step 6: Run Tests and Generate Reports into Temporary Directory
+      # Step 5: Run Tests and Generate Reports into Temporary Directory
       - name: Run Tests
         run: |
-          mvn test -DoutputDirectory=/tmp/reports  # Ensuring the reports go into /tmp/reports
+          # Run your tests and specify the output directory for the reports
+          mvn test -DoutputDirectory=/tmp/reports
 
-      # Step 7: Check Temporary Reports Directory
+      # Step 6: Check if Temporary Reports Directory Exists
       - name: Check Reports in Temporary Directory
         run: |
-          ls -la /tmp/reports
-          if [ -d "/tmp/reports" ]; then
+          if [ -d "/tmp/reports" ] && [ "$(ls -A /tmp/reports)" ]; then
             echo "Temporary reports directory exists with the following contents:"
             ls /tmp/reports
           else
-            echo "Reports directory not found!"
+            echo "Reports directory not found or is empty!"
             exit 1
           fi
 
-      # Step 8: Move Reports to Final Path for Sending
+      # Step 7: Move Reports to Final Path for Sending
       - name: Move Reports to Final Path
         run: |
-          mv /tmp/reports/* $(pwd)/Reports/
-          echo "REPORT_PATH=$(pwd)/Reports" >> $GITHUB_ENV
-          echo "Reports moved to final directory."
+          if [ -d "/tmp/reports" ] && [ "$(ls -A /tmp/reports)" ]; then
+            mv /tmp/reports/* $(pwd)/Reports/
+            echo "REPORT_PATH=$(pwd)/Reports" >> $GITHUB_ENV
+            echo "Reports moved to final directory."
+          else
+            echo "No reports to move!"
+            exit 1
+          fi
 
-      # Step 9: Upload reports as artifacts for manual download (optional)
-      - name: Upload TestNG Reports as Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: TestNGReports
-          path: Reports/*.html  # Upload the HTML report files
-
-      # Step 10: Send email with TestNG Extent Reports
+      # Step 8: Send email with TestNG Extent Reports
       - name: Send email with TestNG Extent Reports
         if: always()  # Ensure this step runs whether the build succeeds or fails
         uses: dawidd6/action-send-mail@v3
