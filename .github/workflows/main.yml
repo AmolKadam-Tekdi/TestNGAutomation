@@ -153,10 +153,11 @@ jobs:
         run: |
           REPORT_DIR=$(pwd)/Reports
           if [ -d "$REPORT_DIR" ]; then
-            echo "REPORT_PATH=$REPORT_DIR" >> $GITHUB_ENV
+          echo "REPORT_PATH=$REPORT_DIR" >> $GITHUB_ENV
           else
-            echo "No reports directory found!"
-            exit 1
+          echo "No reports directory found!"
+          exit 1
+          fi  # Closing the if block properly
 
       # Step 7: Upload reports as artifacts (Optional)
       - name: Upload TestNG Reports
