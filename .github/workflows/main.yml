@@ -174,4 +174,4 @@ jobs:
             CI System
           to: amol.kadam@tekditechnologies.com  # Replace with actual recipient email
           from: CI System <testngautomationtest@gmail.com>
-          attachments: Reports/ExtentReport.html  # Ensure this is the correct path to the report file
+          attachments: Reports/TestSuite.html  # Ensure this is the correct path to the report file

@@ -54,7 +54,8 @@ public class Reporter {
 		// Create an oject using extent reporter for creating report into html format
 
 		ExtentSparkReporter report = new ExtentSparkReporter(
-				parentDirectory + File.separator + timestamp + File.separator + filename + ".html");
+				parentDirectory +  "TestSuite.html");
+//		File.separator + timestamp + File.separator + filename +
 		report.config().setTheme(Theme.STANDARD);
 		// Initialize ExtentReports and attach the ExtentSparkReporter
 

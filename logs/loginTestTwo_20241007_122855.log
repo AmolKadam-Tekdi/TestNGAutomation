@@ -1,0 +1,22 @@
+Oct 07, 2024 12:28:57 PM utils.javautils.BaseUtils logStep
+INFO: Enter Username
+Oct 07, 2024 12:29:02 PM utils.javautils.BaseUtils logStep
+INFO: Username field is enabled -- assertTrue(true)
+Oct 07, 2024 12:29:02 PM utils.javautils.BaseUtils logStep
+INFO: Enter password
+Oct 07, 2024 12:29:02 PM utils.javautils.BaseUtils logStep
+INFO: password field is enabled -- assertTrue(true)
+Oct 07, 2024 12:29:02 PM utils.javautils.BaseUtils logStep
+INFO: the user enters the password {string}
+Oct 07, 2024 12:29:03 PM utils.javautils.BaseUtils logStep
+INFO: Click on the Login Button
+Oct 07, 2024 12:29:03 PM utils.javautils.BaseUtils logStep
+INFO: Login Button is enabled -- assertTrue(true)
+Oct 07, 2024 12:29:03 PM utils.javautils.BaseUtils logStep
+INFO: Document is in ready state.
+Oct 07, 2024 12:29:03 PM utils.javautils.BaseUtils logStep
+INFO: All React or other asynchronous tasks are complete.
+Oct 07, 2024 12:29:05 PM utils.javautils.BaseUtils logStep
+INFO: UI has fully loaded.
+Oct 07, 2024 12:29:09 PM utils.javautils.BaseUtils logStep
+INFO: User Logged in successfully -- assertTrue(true)
