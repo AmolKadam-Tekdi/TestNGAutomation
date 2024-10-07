@@ -146,13 +146,16 @@ jobs:
       - name: Run TestNG tests
         run: mvn test
 
-
-      # Step 6: Upload TestNG Extent Reports as artifacts
-      - name: Upload TestNG Extent Reports
-        uses: actions/upload-artifact@v3
-        with:
-          name: extent-reports
-          path: Reports
+      # Step 6: Push reports to the repository
+      - name: Push Reports to Repository
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add Reports/*
+          git commit -m "Add generated test reports"
+          git push origin HEAD:generated-reports  # Push to a specific branch (e.g., generated-reports)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token for authentication
 
       # Step 7: Send email with TestNG Extent Reports (Runs on both success and failure)
       - name: Send email with TestNG Extent Reports
