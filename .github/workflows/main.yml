@@ -166,12 +166,9 @@ jobs:
           body: |
             Hello,
 
-            The TestNG Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
+            The Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
 
             Please find the attached Extent Reports.
-
-            Regards,
-            CI System
           to: amol.kadam@tekditechnologies.com  # Replace with actual recipient email
           from: CI System <testngautomationtest@gmail.com>
           attachments: Reports/TestSuite.html  # Ensure this is the correct path to the report file
