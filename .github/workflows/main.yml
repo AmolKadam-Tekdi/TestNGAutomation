@@ -159,50 +159,6 @@ jobs:
           # Run your tests and specify the output directory for the reports
           mvn test -DoutputDirectory=/tmp/reports
 
-      # Step 5: Generate Extent Report
-      - name: Generate Extent Report
-        if: always()  # Ensure report generation runs whether the tests pass or fail
-        run: mvn site  # This assumes that your Maven project is configured to generate Extent Reports during 'site' phase
-
-      # Step 6: Deploy Extent Report
-      - name: Deploy Extent Report
-        if: always()
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: target/site/extent-reports  # Change this to the directory where your Extent report is generated
-
-      # Step 7: Upload Extent Report as Artifact
-      - name: Upload Extent Report as Artifact
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: extent-report
-          path: target/site/extent-reports  # Change this to the path where Extent reports are saved
-
-      # Step 8: Send email with Extent Reports (Optional)
-      - name: Send email with Extent Reports
-        if: always()  # Ensure this step runs whether the build succeeds or fails
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "Extent Report - Build ${{ github.run_number }}: ${{ job.status }}"
-          body: |
-            Hello,
-            
-            The UI Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
-            
-            Please find the attached Extent Reports or view them at the deployed location.
-            
-            Regards,
-            CI System
-          to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
-          from: CI System <testngautomationtest@gmail.com>
-          attachments: target/site/extent-reports/*.html  # Attach Extent HTML reports
 
 
 
