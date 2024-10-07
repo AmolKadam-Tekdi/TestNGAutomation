@@ -160,8 +160,8 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: ${{ secrets.EMAIL_USERNAME }}   # Set up as a secret in GitHub
-          password: ${{ secrets.EMAIL_PASSWORD }}   # Set up as a secret in GitHub
+          username: ${{ testngautomationtest@gmail.com }}   # Set up as a secret in GitHub
+          password: ${{ MyPassword@3232# }}   # Set up as a secret in GitHub
           subject: "TestNG Automation Report - Build ${{ github.run_number }}: ${{ job.status }}"
           body: |
             Hello,
@@ -173,5 +173,5 @@ jobs:
             Regards,
             CI System
           to: amol.kadam@tekditechnologies.com  # Replace with actual recipient email
-          from: CI System <testngautomationtest@egmail.com>
+          from: CI System <testngautomationtest@gmail.com>
           attachments: Reports/index.html   # Path to the Extent Report file

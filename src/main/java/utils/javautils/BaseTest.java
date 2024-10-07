@@ -17,8 +17,10 @@ public class BaseTest extends BrowserManager
     @BeforeSuite
     public void setUpSuite(ITestContext context) throws Exception {
         if (!isSuiteInitialized) {
+
             String suiteName = context.getSuite().getName();  // Get the suite name
             Reporter.setupReport(suiteName);
+            logStep("Running the Test Suite" + suiteName);
             isSuiteInitialized = true;
         }
     }
