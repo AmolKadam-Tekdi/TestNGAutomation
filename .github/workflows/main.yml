@@ -146,21 +146,13 @@ jobs:
       - name: Run TestNG tests
         run: mvn test
 
-
-      # Step 6: Create a zip file of the reports
-      - name: Zip Reports
-        run: zip -r reports.zip Reports/
-
-      # Step: Commit logs and reports
-      - name: Commit logs and reports
+      # Step 6: Find the generated report path
+      - name: Find report path
+        id: find_report
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add logs/ reports/
-          git commit -m "Update logs and reports" || echo "No changes to commit"
-          git push origin main
+          echo "REPORT_PATH=$(find . -name '*.html' -exec dirname {} \; | sort -u)" >> $GITHUB_ENV
 
-      # Step 7: Send email with TestNG Extent Reports (Runs on both success and failure)
+      # Step 7: Send email with report URL
       - name: Send email with TestNG Extent Reports
         if: always()  # Ensure this step runs whether the build succeeds or fails
         uses: dawidd6/action-send-mail@v3
@@ -175,13 +167,13 @@ jobs:
 
             The TestNG Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
 
-            Please find the attached Extent Reports.
+            The report can be found at the following location: 
+            ${{ env.REPORT_PATH }}
 
             Regards,
             CI System
-          to: "amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com"  # Replace with actual recipient emails
+          to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
           from: CI System <testngautomationtest@gmail.com>
-          attachments: reports.zip  # Attach the zip file
 
 
 
