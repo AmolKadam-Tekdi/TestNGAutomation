@@ -177,7 +177,7 @@ jobs:
       # Step 7: Upload Extent Report as Artifact
       - name: Upload Extent Report as Artifact
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: extent-report
           path: target/site/extent-reports  # Change this to the path where Extent reports are saved
