@@ -169,6 +169,7 @@ jobs:
             The Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
 
             Please find the attached Extent Reports.
+            
             Regards,
             Amol K
           to: amol.kadam@tekditechnologies.com, vishal_c@tekditechnologies.com  # Replace with actual recipient email
