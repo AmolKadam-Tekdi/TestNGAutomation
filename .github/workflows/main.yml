@@ -142,70 +142,54 @@ jobs:
       - name: Install dependencies
         run: mvn install -DskipTests
 
-      # Step 4: Clean Temporary Reports Directory
-      - name: Clean Temp Reports Directory
-        run: |
-          if [ -d "/tmp/reports" ]; then
-            rm -rf /tmp/reports/*
-            echo "Old temporary reports cleaned."
-          else
-            mkdir -p /tmp/reports
-            echo "Created temporary reports directory."
-          fi
+      # Step 4: Run UI-Automation tests with Chrome browser
+      - name: Run UI-Automation tests with Chrome browser
+        run: mvn test -Dbrowser=chrome
 
-      # Step 5: Run Tests and Generate Reports into Temporary Directory
-      - name: Run Tests
-        run: |
-          # Run your tests and specify the output directory for the reports
-          mvn test -DoutputDirectory=/tmp/reports
+      # Step 5: Generate Extent Report
+      - name: Generate Extent Report
+        if: always()  # Ensure report generation runs whether the tests pass or fail
+        run: mvn site  # This assumes that your Maven project is configured to generate Extent Reports during 'site' phase
 
-      # Step 6: Check if Temporary Reports Directory Exists
-      - name: Check Reports in Temporary Directory
-        run: |
-          if [ -d "/tmp/reports" ] && [ "$(ls -A /tmp/reports)" ]; then
-            echo "Temporary reports directory exists with the following contents:"
-            ls /tmp/reports
-          else
-            echo "Reports directory not found or is empty!"
-            exit 1
-          fi
+      # Step 6: Deploy Extent Report
+      - name: Deploy Extent Report
+        if: always()
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: target/site/extent-reports  # Change this to the directory where your Extent report is generated
 
-      # Step 7: Move Reports to Final Path for Sending
-      - name: Move Reports to Final Path
-        run: |
-          if [ -d "/tmp/reports" ] && [ "$(ls -A /tmp/reports)" ]; then
-            mv /tmp/reports/* $(pwd)/Reports/
-            echo "REPORT_PATH=$(pwd)/Reports" >> $GITHUB_ENV
-            echo "Reports moved to final directory."
-          else
-            echo "No reports to move!"
-            exit 1
-          fi
+      # Step 7: Upload Extent Report as Artifact
+      - name: Upload Extent Report as Artifact
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: extent-report
+          path: target/site/extent-reports  # Change this to the path where Extent reports are saved
 
-      # Step 8: Send email with TestNG Extent Reports
-      - name: Send email with TestNG Extent Reports
+      # Step 8: Send email with Extent Reports (Optional)
+      - name: Send email with Extent Reports
         if: always()  # Ensure this step runs whether the build succeeds or fails
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: ${{ secrets.EMAIL_USERNAME }}   # Set up as a secret in GitHub
-          password: ${{ secrets.EMAIL_PASSWORD }}   # Set up as a secret in GitHub
-          subject: "TestNG Automation Report - Build ${{ github.run_number }}: ${{ job.status }}"
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Extent Report - Build ${{ github.run_number }}: ${{ job.status }}"
           body: |
             Hello,
             
-            The TestNG Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
+            The UI Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
             
-            Please find the attached Extent Reports.
+            Please find the attached Extent Reports or view them at the deployed location.
             
             Regards,
             CI System
           to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
           from: CI System <testngautomationtest@gmail.com>
-          attachments: ${{ env.REPORT_PATH }}/*.html  # Attach all HTML reports in the Reports directory
-
-
+          attachments: target/site/extent-reports/*.html  # Attach Extent HTML reports
 
 
 
