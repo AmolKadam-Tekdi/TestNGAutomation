@@ -146,11 +146,11 @@ jobs:
       - name: Run TestNG tests
         run: mvn test
 
-      # Step 6: Find the generated report path
-      - name: Find report path
-        id: find_report
+      # Step 6: Set the report path
+      - name: Set report path
+        id: set_report_path
         run: |
-          echo "REPORT_PATH=$(find . -name '*.html' -exec dirname {} \; | sort -u)" >> $GITHUB_ENV
+          echo "REPORT_PATH=$(pwd)/Reports" >> $GITHUB_ENV
 
       # Step 7: Send email with report URL
       - name: Send email with TestNG Extent Reports
@@ -174,8 +174,6 @@ jobs:
             CI System
           to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
           from: CI System <testngautomationtest@gmail.com>
-
-
 
 
 
