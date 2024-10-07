@@ -2,6 +2,7 @@ package utils.javautils;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.observer.ExtentObserver;
 import io.cucumber.java.Before;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
@@ -19,19 +20,22 @@ public class BaseTest extends BrowserManager
     private static ExtentReports extent;
     private static ExtentTest suiteTest;
 
-
     @BeforeSuite
     public void setUpSuite(ITestContext context) throws Exception {
         if (!isSuiteInitialized) {
-            ExtentReports extent = new ExtentReports();
-            extent.createTest("TestSuite");
+            // Initialize the ExtentReports object
+            ExtentReports htmlReporter = new ExtentReports();
+            extent = new ExtentReports();
+            extent.attachReporter((ExtentObserver) htmlReporter);
+
+            suiteTest = extent.createTest("TestSuite"); // Create a suite test instance
 
             String suiteName = context.getSuite().getName();  // Get the suite name
-            Reporter.setupReport();
+            logStep("Running the Test Suite: " + suiteName);
             isSuiteInitialized = true;
-            logStep("Running the Test Suite : " + suiteName);
         }
     }
+
 
 
 
