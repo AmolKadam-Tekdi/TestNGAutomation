@@ -142,22 +142,32 @@ jobs:
       - name: Install dependencies
         run: mvn install -DskipTests
 
-      # Step 5: Run TestNG tests
-      - name: Run TestNG tests
+      # Step 5: Clean previous reports to avoid old reports being sent
+      - name: Clean Reports Directory
+        run: |
+          if [ -d "Reports" ]; then
+            rm -rf Reports/*
+            echo "Old reports cleaned."
+          else
+            echo "No previous reports directory found."
+          fi
+
+      # Step 6: Run Tests and Generate Reports
+      - name: Run Tests
         run: mvn test
 
-      # Step 6: Verify that reports are generated
+      # Step 7: Check Reports Directory after tests run
       - name: Check Reports Directory
         run: |
           ls -la Reports
           if [ -d "Reports" ]; then
             echo "Reports directory exists."
           else
-            echo "Reports directory does not exist."
+            echo "Reports directory does not exist. Test execution might have failed."
             exit 1
           fi
 
-      # Step 7: Set the report path and ensure the directory exists
+      # Step 8: Set the report path for later use in emails
       - name: Set report path
         id: set_report_path
         run: |
@@ -169,14 +179,14 @@ jobs:
             exit 1
           fi
 
-      # Step 8: Upload reports as artifacts (Optional)
+      # Step 9: Upload reports as artifacts for manual download (optional)
       - name: Upload TestNG Reports as Artifact
         uses: actions/upload-artifact@v3
         with:
           name: TestNGReports
           path: Reports/*.html  # Upload the HTML report files
 
-      # Step 9: Send email with TestNG Extent Reports
+      # Step 10: Send email with TestNG Extent Reports
       - name: Send email with TestNG Extent Reports
         if: always()  # Ensure this step runs whether the build succeeds or fails
         uses: dawidd6/action-send-mail@v3
@@ -198,8 +208,6 @@ jobs:
           to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
           from: CI System <testngautomationtest@gmail.com>
           attachments: ${{ env.REPORT_PATH }}/*.html  # Attach all HTML reports in the Reports directory
-
-
 
 
 
