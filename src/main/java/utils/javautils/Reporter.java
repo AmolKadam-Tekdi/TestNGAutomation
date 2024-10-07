@@ -30,8 +30,8 @@ import java.util.Date;
  */
 public class Reporter {
 
-	private static ExtentReports extent;
-	private static ExtentTest test;
+	public static ExtentReports extent;
+	public static ExtentTest test;
 	static String timestamp = new SimpleDateFormat("ddMMyyyy_HHmmss").format(new Date());
 
 //	String suiteName
@@ -48,7 +48,6 @@ public class Reporter {
 				parentDirectory +  "TestSuite.html");
 		report.config().setTheme(Theme.STANDARD);
 
-		extent = new ExtentReports();
 		extent.attachReporter(report);
 	}
 

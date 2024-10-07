@@ -1,0 +1,2 @@
+Oct 07, 2024 3:10:50 PM utils.javautils.BaseUtils logStep
+INFO: Exception in waitForUi: Cannot invoke "org.openqa.selenium.WebDriver.findElements(org.openqa.selenium.By)" because "utils.javautils.BaseUtils.driver" is null
