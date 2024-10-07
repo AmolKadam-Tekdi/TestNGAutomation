@@ -1,5 +1,7 @@
 package utils.javautils;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
 import io.cucumber.java.Before;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
@@ -17,6 +19,8 @@ public class BaseTest extends BrowserManager
     @BeforeSuite
     public void setUpSuite(ITestContext context) throws Exception {
         if (!isSuiteInitialized) {
+            ExtentReports extent = new ExtentReports();
+            ExtentTest test = extent.createTest("TestSuite");
 
             String suiteName = context.getSuite().getName();  // Get the suite name
             Reporter.setupReport();
