@@ -172,6 +172,6 @@ jobs:
 
             Regards,
             CI System
-          to: recipient@example.com  # Replace with actual recipient email
+          to: amol.kadam@tekditechnologies.com  # Replace with actual recipient email
           from: CI System <testngautomationtest@egmail.com>
           attachments: Reports/index.html   # Path to the Extent Report file
