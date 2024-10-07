@@ -142,9 +142,22 @@ jobs:
       - name: Install dependencies
         run: mvn install -DskipTests
 
-      # Step 4: Run UI-Automation tests with Chrome browser
-      - name: Run UI-Automation tests with Chrome browser
-        run: mvn test -Dbrowser=chrome
+      # Step 4: Clean Temporary Reports Directory
+      - name: Clean Temp Reports Directory
+        run: |
+          if [ -d "/tmp/reports" ]; then
+            rm -rf /tmp/reports/*
+            echo "Old temporary reports cleaned."
+          else
+            mkdir -p /tmp/reports
+            echo "Created temporary reports directory."
+          fi
+
+      # Step 5: Run Tests and Generate Reports into Temporary Directory
+      - name: Run Tests
+        run: |
+          # Run your tests and specify the output directory for the reports
+          mvn test -DoutputDirectory=/tmp/reports
 
       # Step 5: Generate Extent Report
       - name: Generate Extent Report
