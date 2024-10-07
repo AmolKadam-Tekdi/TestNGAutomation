@@ -146,25 +146,23 @@ jobs:
       - name: Run TestNG tests
         run: mvn test
 
-
-      # Step 6: Set the report path and ensure the directory exists
-      - name: Set report path
-        id: set_report_path
+      # Step 6: Verify that reports are generated
+      - name: Check Reports Directory
         run: |
-          REPORT_DIR=$(pwd)/Reports
-          if [ -d "$REPORT_DIR" ]; then
-          echo "REPORT_PATH=$REPORT_DIR" >> $GITHUB_ENV
+          ls -la Reports
+          if [ -d "Reports" ]; then
+            echo "Reports directory exists."
           else
-          echo "No reports directory found!"
-          exit 1
-          fi  # Closing the if block properly
+            echo "Reports directory does not exist."
+            exit 1
+          fi
 
       # Step 7: Upload reports as artifacts (Optional)
-      - name: Upload TestNG Reports
+      - name: Upload TestNG Reports as Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: TestNG-Extent-Reports
-          path: ${{ env.REPORT_PATH }}/*.html  # This will upload all HTML reports
+          name: TestNGReports
+          path: Reports/*.html  # Upload the HTML report files
 
       # Step 8: Send email with TestNG Extent Reports
       - name: Send email with TestNG Extent Reports
@@ -181,13 +179,66 @@ jobs:
 
             The TestNG Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
 
-            You can download the TestNG Extent Reports from the attached files.
+            Please find the attached Extent Reports.
 
             Regards,
             CI System
           to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
           from: CI System <testngautomationtest@gmail.com>
           attachments: ${{ env.REPORT_PATH }}/*.html  # Attach all HTML reports in the Reports directory
+
+
+
+
+
+
+
+
+
+
+
+
+#      # Step 6: Set the report path and ensure the directory exists
+#      - name: Set report path
+#        id: set_report_path
+#        run: |
+#          REPORT_DIR=$(pwd)/Reports
+#          if [ -d "$REPORT_DIR" ]; then
+#          echo "REPORT_PATH=$REPORT_DIR" >> $GITHUB_ENV
+#          else
+#          echo "No reports directory found!"
+#          exit 1
+#          fi  # Closing the if block properly
+#
+#      # Step 7: Upload reports as artifacts (Optional)
+#      - name: Upload TestNG Reports
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: TestNG-Extent-Reports
+#          path: ${{ env.REPORT_PATH }}/*.html  # This will upload all HTML reports
+#
+#      # Step 8: Send email with TestNG Extent Reports
+#      - name: Send email with TestNG Extent Reports
+#        if: always()  # Ensure this step runs whether the build succeeds or fails
+#        uses: dawidd6/action-send-mail@v3
+#        with:
+#          server_address: smtp.gmail.com
+#          server_port: 465
+#          username: ${{ secrets.EMAIL_USERNAME }}   # Set up as a secret in GitHub
+#          password: ${{ secrets.EMAIL_PASSWORD }}   # Set up as a secret in GitHub
+#          subject: "TestNG Automation Report - Build ${{ github.run_number }}: ${{ job.status }}"
+#          body: |
+#            Hello,
+#
+#            The TestNG Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
+#
+#            You can download the TestNG Extent Reports from the attached files.
+#
+#            Regards,
+#            CI System
+#          to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
+#          from: CI System <testngautomationtest@gmail.com>
+#          attachments: ${{ env.REPORT_PATH }}/*.html  # Attach all HTML reports in the Reports directory
 
 
 
