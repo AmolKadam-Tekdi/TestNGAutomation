@@ -146,16 +146,19 @@ jobs:
       - name: Run TestNG tests
         run: mvn test
 
-      # Step 6: Push reports to the repository
-      - name: Push Reports to Repository
+
+      # Step 6: Create a zip file of the reports
+      - name: Zip Reports
+        run: zip -r reports.zip Reports/
+
+      # Step: Commit logs and reports
+      - name: Commit logs and reports
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add Reports/*
-          git commit -m "Add generated test reports"
-          git push origin HEAD:generated-reports  # Push to a specific branch (e.g., generated-reports)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token for authentication
+          git add logs/ reports/
+          git commit -m "Update logs and reports" || echo "No changes to commit"
+          git push origin main
 
       # Step 7: Send email with TestNG Extent Reports (Runs on both success and failure)
       - name: Send email with TestNG Extent Reports
@@ -178,7 +181,9 @@ jobs:
             CI System
           to: "amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com"  # Replace with actual recipient emails
           from: CI System <testngautomationtest@gmail.com>
-          attachments: Reports/*  # Attach all files in the Reports directory
+          attachments: reports.zip  # Attach the zip file
+
+
 
 
 
