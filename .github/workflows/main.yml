@@ -156,7 +156,7 @@ jobs:
       # Step 7: Send email with TestNG Extent Reports (Runs on both success and failure)
       - name: Send email with TestNG Extent Reports
         if: always()  # Ensure this step runs whether the build succeeds or fails
-        uses: mikepenz/send-mail-action@v1.5.0
+        uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
@@ -172,8 +172,6 @@ jobs:
 
             Regards,
             CI System
-          to: "amol.kadam@tekditechnologies.com"  # Change to recipient's email address
-          from: "CI System <testngautomationtest@gmail.com>"
-          content_type: text/html
-          attachments: Reports   # Path to your Extent Report file
-
+          to: recipient@example.com  # Replace with actual recipient email
+          from: CI System <testngautomationtest@egmail.com>
+          attachments: Reports/index.html   # Path to the Extent Report file
