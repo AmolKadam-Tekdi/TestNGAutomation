@@ -153,17 +153,14 @@ jobs:
             echo "Created temporary reports directory."
           fi
 
-      # Step 5: Run Tests and Generate Reports into Temporary Directory
-      - name: Run Tests
-        run: |
-          # Run your tests and specify the output directory for the reports
-          mvn test -DoutputDirectory=/tmp/reports
-
+      # Step 4: Run UI-Automation tests with Chrome browser
+      - name: Run UI-Automation tests with Chrome browser
+        run: mvn test -Dthread=3 -Dlaunch=remote  # Adjust as necessary for your project
 
       # Step 5: Generate Extent Report
       - name: Generate Extent Report
-        if: always()  # Ensure report generation runs whether the tests pass or fail
-        run: mvn site  # This assumes that your Maven project is configured to generate Extent Reports during 'site' phase
+        if: always()  # Ensure report generation runs regardless of test success/failure
+        run: mvn site  # Adjust this to your Extent report generation command
 
       # Step 6: Deploy Extent Report
       - name: Deploy Extent Report
@@ -172,15 +169,15 @@ jobs:
         env:
           ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: target/site/extent-reports  # Change this to the directory where your Extent report is generated
+          PUBLISH_DIR: target/extent-reports  # This should point to the location of your Extent reports
 
       # Step 7: Upload Extent Report as Artifact
       - name: Upload Extent Report as Artifact
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3  # Updated to v3
         with:
           name: extent-report
-          path: target/site/extent-reports  # Change this to the path where Extent reports are saved
+          path: target/extent-reports  # Update to the actual directory where Extent reports are generated
 
       # Step 8: Send email with Extent Reports (Optional)
       - name: Send email with Extent Reports
@@ -203,8 +200,7 @@ jobs:
             CI System
           to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
           from: CI System <testngautomationtest@gmail.com>
-          attachments: target/site/extent-reports/*.html  # Attach Extent HTML reports
-
+          attachments: target/extent-reports/*.html  # Attach Extent HTML reports
 
 
 
