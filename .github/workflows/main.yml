@@ -151,7 +151,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: extent-reports
-          path: Reports
+          path: Reports/**  # Ensure this path matches the actual path of the Extent Report
 
       # Step 7: Send email with TestNG Extent Reports (Runs on both success and failure)
       - name: Send email with TestNG Extent Reports
@@ -174,4 +174,4 @@ jobs:
             CI System
           to: amol.kadam@tekditechnologies.com  # Replace with actual recipient email
           from: CI System <testngautomationtest@gmail.com>
-          attachments: Reports   # Path to the Extent Report file
+          attachments: Reports/ExtentReport.html  # Ensure this is the correct path to the report file
