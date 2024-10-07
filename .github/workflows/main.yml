@@ -169,6 +169,8 @@ jobs:
             The Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
 
             Please find the attached Extent Reports.
-          to: amol.kadam@tekditechnologies.com  # Replace with actual recipient email
+            Regards,
+            Amol K
+          to: amol.kadam@tekditechnologies.com, vishal_c@tekditechnologies.com  # Replace with actual recipient email
           from: CI System <testngautomationtest@gmail.com>
           attachments: Reports/TestSuite.html  # Ensure this is the correct path to the report file
