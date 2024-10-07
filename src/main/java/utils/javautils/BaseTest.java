@@ -26,7 +26,7 @@ public class BaseTest extends BrowserManager
             // Initialize the ExtentReports object
             ExtentReports htmlReporter = new ExtentReports();
             extent = new ExtentReports();
-            extent.attachReporter((ExtentObserver) htmlReporter);
+            Reporter.setupReport();
 
             suiteTest = extent.createTest("TestSuite"); // Create a suite test instance
 
