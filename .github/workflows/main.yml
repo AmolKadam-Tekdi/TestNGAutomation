@@ -172,12 +172,11 @@ jobs:
       - name: Install dependencies
         run: mvn install -DskipTests
 
-      # Step 5: Create Reports Directories
-      - name: Create Reports Directories
+      # Step 5: Clean Temporary Reports Directory
+      - name: Clean Temp Reports Directory
         run: |
-          mkdir -p /tmp/reports/suite1
-          mkdir -p /tmp/reports/suite2
-          mkdir -p /tmp/reports/testng
+          rm -rf /tmp/reports/*
+          mkdir -p /tmp/reports/suite1 /tmp/reports/suite2 /tmp/reports/testng
 
       # Step 6: Run UI-Automation tests and save reports in separate directories
       - name: Run UI-Automation tests
@@ -186,7 +185,7 @@ jobs:
           mvn test -DsuiteXmlFile=suite2.xml -Dtestng.output.dir=/tmp/reports/suite2
           mvn test -DsuiteXmlFile=testng.xml -Dtestng.output.dir=/tmp/reports/testng
 
-      # Step 7: Upload all Extent Reports from the Temporary Directories
+      # Step 7: Upload Extent Reports from Temporary Directories
       - name: Upload Extent Reports as Artifacts
         if: always()
         uses: actions/upload-artifact@v3
@@ -220,4 +219,3 @@ jobs:
             /tmp/reports/suite1/*.html,  # Attach Suite 1 reports
             /tmp/reports/suite2/*.html,  # Attach Suite 2 reports
             /tmp/reports/testng/*.html     # Attach TestNG reports
-
