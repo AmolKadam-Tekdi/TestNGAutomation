@@ -179,7 +179,7 @@ jobs:
         uses: actions/upload-artifact@v3  # Updated to v3 to avoid deprecation
         with:
           name: extent-report
-          path: Reports/**  # Update to your report directory path
+          path: Reports/*  # Update to your report directory path
 
       # Step 8: Send email with Extent Reports (Optional)
       - name: Send email with Extent Reports
