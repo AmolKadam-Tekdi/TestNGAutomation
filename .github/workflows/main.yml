@@ -165,19 +165,19 @@ jobs:
       # Step 6: Deploy Extent Report
       - name: Deploy Extent Report
         if: always()
-        uses: peaceiris/actions-gh-pages@v2
+        uses: peaceiris/actions-gh-pages@v3  # Ensure you're using the latest version here
         env:
           ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: target/extent-reports  # This should point to the location of your Extent reports
+          PUBLISH_DIR: target/extent-reports  # Ensure this path points to where Extent reports are generated
 
-      # Step 7: Upload Extent Report as Artifact
+      # Step 7: Upload Extent Report as Artifact using the latest version (v3)
       - name: Upload Extent Report as Artifact
         if: always()
-        uses: actions/upload-artifact@v3  # Updated to v3
+        uses: actions/upload-artifact@v3  # Updated to v3 to avoid deprecation
         with:
           name: extent-report
-          path: target/extent-reports  # Update to the actual directory where Extent reports are generated
+          path: target/extent-reports  # Update to your report directory path
 
       # Step 8: Send email with Extent Reports (Optional)
       - name: Send email with Extent Reports
@@ -201,6 +201,7 @@ jobs:
           to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
           from: CI System <testngautomationtest@gmail.com>
           attachments: target/extent-reports/*.html  # Attach Extent HTML reports
+
 
 
 
