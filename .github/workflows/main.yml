@@ -168,7 +168,9 @@ jobs:
 
       # Step 5: Create Reports Directory
       - name: Create Reports Directory
-        run: mkdir -p /tmp/reports  # Create the base reports directory
+        run: mkdir -p /tmp/reports/suite1  # Create the base reports directory
+             mkdir -p /tmp/reports/suite2  # Create the base reports directory
+             mkdir -p /tmp/reports/testng  # Create the base reports directory
 
       # Step 6: Run multiple UI-Automation tests and save reports in separate directories
       - name: Run UI-Automation tests
