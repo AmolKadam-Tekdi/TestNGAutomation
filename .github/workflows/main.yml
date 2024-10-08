@@ -134,8 +134,8 @@ on:
   pull_request:
     branches:
       - main
-  schedule:
-    - cron: '30 23 * * *'  # This will run every day at 5 AM IST (11:30 PM UTC)
+  schedule:  # Trigger daily at 5 AM IST (23:00 UTC)
+    - cron: '0 23 * * *'
 
 jobs:
   build:
@@ -146,14 +146,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Step 2: Set up JDK 16 (Ensure you are using Java 16)
+      # Step 2: Set up JDK 16
       - name: Set up JDK 16
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '16'
 
-      # Step 3: Cache Maven dependencies for faster builds
+      # Step 3: Cache Maven dependencies
       - name: Cache Maven dependencies
         uses: actions/cache@v2
         with:
@@ -166,54 +166,45 @@ jobs:
       - name: Install dependencies
         run: mvn install -DskipTests
 
-      # Step 5: Clean Temporary Reports Directory
-      - name: Clean Temp Reports Directory
-        run: |
-          if [ -d "/tmp/reports" ]; then
-            rm -rf /tmp/reports/*
-            echo "Old temporary reports cleaned."
-          else
-            mkdir -p /tmp/reports
-            echo "Created temporary reports directory."
-          fi
+      # Step 5: Create Reports Directory
+      - name: Create Reports Directory
+        run: mkdir -p /tmp/reports  # Create the base reports directory
 
-      # Step 6: Run multiple UI-Automation tests
+      # Step 6: Run multiple UI-Automation tests and save reports in separate directories
       - name: Run UI-Automation tests
         run: |
-          mvn test -DsuiteXmlFile=suite1.xml -DreportDir=/tmp/reports
-          mvn test -DsuiteXmlFile=suite2.xml -DreportDir=/tmp/reports
-          mvn test -DsuiteXmlFile=testng.xml -DreportDir=/tmp/reports
+          mvn test -DsuiteXmlFile=suite1.xml -DreportDir=/tmp/reports/suite1
+          mvn test -DsuiteXmlFile=suite2.xml -DreportDir=/tmp/reports/suite2
+          mvn test -DsuiteXmlFile=testng.xml -DreportDir=/tmp/reports/testng
 
-      # Step 7: Upload Extent Reports from Temporary Directory
-      - name: Upload Extent Reports as Artifact
+      # Step 7: Upload all Extent Reports from the Temporary Directory
+      - name: Upload Extent Reports as Artifacts
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: extent-reports
-          path: /tmp/reports/*.html  # Ensure all HTML reports are uploaded
+          path: /tmp/reports/**/*.html  # Upload all HTML reports from all suites
           if-no-files-found: warn
 
-
-        
       # Step 8: Send email with Extent Reports
       - name: Send email with Extent Reports
-        if: always()  # Ensure this step runs whether the build succeeds or fails
+        if: always()
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "Extent Report - Build ${{ github.run_number }}: ${{ job.status }}"
+          subject: "Extent Reports - Build ${{ github.run_number }}: ${{ job.status }}"
           body: |
             Hello,
 
             The UI Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
 
-            Please find the attached Extent Reports.
+            Please find the attached Extent Reports or view them at the deployed location.
 
             Regards,
             CI System
-          to: "amol.kadam@tekditechnologies.com, vishal_c@tekditechnologies.com"
-          from: "CI System <${{ secrets.EMAIL_USERNAME }}>"
-          attachments: /tmp/reports/*.html  # Attach reports from the temporary directory
+          to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
+          from: CI System <testngautomationtest@gmail.com>
+          attachments: /tmp/reports/**/*.html  # Attach all generated HTML reports
