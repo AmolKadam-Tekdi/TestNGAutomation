@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  *
@@ -55,10 +56,12 @@ public class Reporter {
 
 
 	public static void setupReport() {
+		// Set the time zone to IST
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
+
 		logStep("Reports are now getting generated");
 
-		// Change the parent directory to a temporary location
-		String parentDirectory = "/tmp/reports" + File.separator;
+		String parentDirectory = System.getProperty("user.dir") + File.separator + "reports" + File.separator;
 
 		createDirectory(parentDirectory);
 
