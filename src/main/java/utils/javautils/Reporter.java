@@ -56,12 +56,12 @@ public class Reporter {
 
 
 	public static void setupReport() {
-		// Set the time zone to IST
+		logStep("Reports are now getting generated");
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
 
-		logStep("Reports are now getting generated");
 
-		String parentDirectory = System.getProperty("user.dir") + File.separator + "reports" + File.separator;
+		// Change the parent directory to a temporary location
+		String parentDirectory = "/tmp/reports" + File.separator;
 
 		createDirectory(parentDirectory);
 
