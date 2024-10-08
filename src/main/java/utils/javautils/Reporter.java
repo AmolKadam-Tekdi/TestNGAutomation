@@ -36,7 +36,7 @@ public class Reporter {
 
 //	String suiteName
 
-	public static void setupReport() {
+/*	public static void setupReport() {
 //		filename = filename + "_" + timestamp;
 
 		logStep("Reports are now getting generated");
@@ -48,6 +48,21 @@ public class Reporter {
 
 		ExtentSparkReporter report = new ExtentSparkReporter(
 				parentDirectory +  "TestSuite.html");
+		report.config().setTheme(Theme.STANDARD);
+
+		extent.attachReporter(report);
+	}*/
+
+
+	public static void setupReport() {
+		logStep("Reports are now getting generated");
+
+		// Change the parent directory to a temporary location
+		String parentDirectory = "/tmp/reports" + File.separator;
+
+		createDirectory(parentDirectory);
+
+		ExtentSparkReporter report = new ExtentSparkReporter(parentDirectory + "TestSuite.html");
 		report.config().setTheme(Theme.STANDARD);
 
 		extent.attachReporter(report);
