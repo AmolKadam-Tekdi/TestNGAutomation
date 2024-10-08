@@ -176,9 +176,9 @@ jobs:
       # Step 6: Run UI-Automation tests and save reports in separate directories
       - name: Run UI-Automation tests
         run: |
-          mvn test -DsuiteXmlFile=suite1.xml -DreportDir=/tmp/reports/suite1
-          mvn test -DsuiteXmlFile=suite2.xml -DreportDir=/tmp/reports/suite2
-          mvn test -DsuiteXmlFile=testng.xml -DreportDir=/tmp/reports/testng
+          mvn test -DsuiteXmlFile=suite1.xml -Dtestng.output.dir=/tmp/reports/suite1
+          mvn test -DsuiteXmlFile=suite2.xml -Dtestng.output.dir=/tmp/reports/suite2
+          mvn test -DsuiteXmlFile=testng.xml -Dtestng.output.dir=/tmp/reports/testng
 
       # Step 7: Upload all Extent Reports from the Temporary Directories
       - name: Upload Extent Reports as Artifacts
