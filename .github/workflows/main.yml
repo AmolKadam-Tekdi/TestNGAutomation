@@ -55,13 +55,13 @@ jobs:
       # Step 5: Clean Temporary Reports Directory
       - name: Clean Temp Reports Directory
         run: |
-          if [ -d "/tmp/reports" ]; then
-            rm -rf /tmp/reports/*
-            echo "Old temporary reports cleaned."
-          else
+#          if [ -d "/tmp/reports" ]; then
+#            rm -rf /tmp/reports/*
+#            echo "Old temporary reports cleaned."
+#          else
             mkdir -p /tmp/reports
             echo "Created temporary reports directory."
-          fi
+#          fi
 
       # Step 6: Run UI-Automation tests with Chrome browser
 #      - name: Run UI-Automation tests with Chrome browser
