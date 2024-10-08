@@ -185,14 +185,9 @@ jobs:
           mvn test -DsuiteXmlFile=suite2.xml -Dtestng.output.dir=/tmp/reports/suite2
           mvn test -DsuiteXmlFile=testng.xml -Dtestng.output.dir=/tmp/reports/testng
 
-      # Step 7: Upload Extent Reports from Temporary Directories
-      - name: Upload Extent Reports as Artifacts
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: extent-reports
-          path: /tmp/reports/**/*.html  # Upload all HTML reports from all suite directories
-          if-no-files-found: warn
+      # Step 7: List generated reports for debugging
+      - name: List generated reports
+        run: ls -R /tmp/reports
 
       # Step 8: Send email with all Extent Reports as separate attachments
       - name: Send email with Extent Reports
