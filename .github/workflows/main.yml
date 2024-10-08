@@ -59,8 +59,8 @@ jobs:
 #            rm -rf /tmp/reports/*
 #            echo "Old temporary reports cleaned."
 #          else
-            mkdir -p /tmp/reports
-            echo "Created temporary reports directory."
+           mkdir -p /tmp/reports
+           echo "Created temporary reports directory."
 #          fi
 
       # Step 6: Run UI-Automation tests with Chrome browser
