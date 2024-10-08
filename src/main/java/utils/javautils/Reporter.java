@@ -96,8 +96,11 @@ public class Reporter {
 	 */
 	public static void flushReport() {
 
-		extent.flush();
-
+		if (extent != null) {
+			extent.flush();  // Ensure the report is saved
+		} else {
+			System.out.println("Extent report object is null, cannot flush report.");
+		}
 	}
 
 	/**

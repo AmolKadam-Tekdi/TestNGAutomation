@@ -172,14 +172,14 @@ jobs:
           publish_dir: target/extent-reports
         env:
           JAVA_HOME: /opt/hostedtoolcache/Java_Adopt_jdk/16.0.2-7/x64
-          
+
       # Step 7: Upload Extent Report as Artifact using the latest version (v3)
       - name: Upload Extent Report as Artifact
         if: always()
         uses: actions/upload-artifact@v3  # Updated to v3 to avoid deprecation
         with:
           name: extent-report
-          path: target/extent-reports  # Update to your report directory path
+          path: Reports/**  # Update to your report directory path
 
       # Step 8: Send email with Extent Reports (Optional)
       - name: Send email with Extent Reports
