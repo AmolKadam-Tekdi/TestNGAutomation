@@ -446,6 +446,6 @@ jobs:
             
             Regards,
             CI System
-          to: "amol.kadam@tekditechnologies.com, vishal_c@tekditechnologies.com, manoj_n@tekditechnologies.com, manoj_l@techjoomla.com"
+          to: "amol.kadam@tekditechnologies.com, vishal_c@tekditechnologies.com, manoj_n@tekditechnologies.com"
           from: "CI System <${{ secrets.EMAIL_USERNAME }}>"
           attachments: /tmp/reports/*.html  # Attach reports from the temporary directory
