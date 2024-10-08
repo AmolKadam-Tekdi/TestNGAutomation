@@ -195,7 +195,14 @@ jobs:
           path: /tmp/reports/**/*.html  # Upload all HTML reports from all suite directories
           if-no-files-found: warn
 
-      # Step 8: Send email with all Extent Reports as separate attachments
+      # Step 8: Collect all report paths for attachment
+      - name: Collect report paths
+        id: collect_reports
+        run: |
+          REPORTS=$(find /tmp/reports -name "*.html")
+          echo "REPORTS=$REPORTS" >> $GITHUB_ENV
+
+      # Step 9: Send email with all Extent Reports as separate attachments
       - name: Send email with Extent Reports
         if: always()
         uses: dawidd6/action-send-mail@v3
@@ -210,41 +217,11 @@ jobs:
 
             The UI Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
 
-            Please find the attached Extent Reports or view them at the deployed location.
+            Please find the attached Extent Reports.
 
             Regards,
             CI System
           to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
           from: CI System <testngautomationtest@gmail.com>
+          attachments: ${{ env.REPORTS }}  # Attach all generated HTML reports
 
-      # Step 9: Attach all HTML reports as separate attachments
-      - name: Attach all HTML reports separately
-        if: always()
-        run: |
-          for report in /tmp/reports/**/*.html; do
-            echo "Attaching report: $report"
-            echo "$report" >> reports.txt
-          done
-          echo "Attached reports: $(cat reports.txt)"
-
-      - name: Send email with multiple attachments
-        if: always()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "Extent Reports - Build ${{ github.run_number }}: ${{ job.status }}"
-          body: |
-            Hello,
-
-            The UI Automation build ${{ github.run_number }} has completed with status: **${{ job.status }}**.
-
-            Please find the attached Extent Reports or view them at the deployed location.
-
-            Regards,
-            CI System
-          to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
-          from: CI System <testngautomationtest@gmail.com>
-          attachments: $(cat reports.txt)  # Attach all generated HTML reports
