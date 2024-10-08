@@ -112,3 +112,5 @@ Oct 07, 2024 12:28:05 PM utils.javautils.BaseUtils logStep
 INFO: Running the Test SuiteTest Suite
 Oct 08, 2024 11:18:11 AM utils.javautils.BaseUtils logStep
 INFO: Current working directory: D:\Automation Frameworks\TestNG\TestNGAutomationFramework
+Oct 08, 2024 3:45:23 PM utils.javautils.BaseUtils logStep
+INFO: Current working directory: D:\Automation Frameworks\TestNG\TestNGAutomationFramework
