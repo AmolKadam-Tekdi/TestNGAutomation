@@ -166,26 +166,27 @@ jobs:
       - name: Install dependencies
         run: mvn install -DskipTests
 
-      # Step 5: Create Reports Directory
-      - name: Create Reports Directory
-        run: mkdir -p /tmp/reports/suite1  # Create the base reports directory
-             mkdir -p /tmp/reports/suite2  # Create the base reports directory
-             mkdir -p /tmp/reports/testng  # Create the base reports directory
+      # Step 5: Create Reports Directories
+      - name: Create Reports Directories
+        run: |
+          mkdir -p /tmp/reports/suite1
+          mkdir -p /tmp/reports/suite2
+          mkdir -p /tmp/reports/testng
 
-      # Step 6: Run multiple UI-Automation tests and save reports in separate directories
+      # Step 6: Run UI-Automation tests and save reports in separate directories
       - name: Run UI-Automation tests
         run: |
           mvn test -DsuiteXmlFile=suite1.xml -DreportDir=/tmp/reports/suite1
           mvn test -DsuiteXmlFile=suite2.xml -DreportDir=/tmp/reports/suite2
           mvn test -DsuiteXmlFile=testng.xml -DreportDir=/tmp/reports/testng
 
-      # Step 7: Upload all Extent Reports from the Temporary Directory
+      # Step 7: Upload all Extent Reports from the Temporary Directories
       - name: Upload Extent Reports as Artifacts
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: extent-reports
-          path: /tmp/reports/**/*.html  # Upload all HTML reports from all suites
+          path: /tmp/reports/**/*.html  # Upload all HTML reports from all suite directories
           if-no-files-found: warn
 
       # Step 8: Send email with Extent Reports
