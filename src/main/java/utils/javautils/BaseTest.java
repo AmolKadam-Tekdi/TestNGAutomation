@@ -23,7 +23,7 @@ public class BaseTest extends BrowserManager
             String suiteName = context.getSuite().getName();  // Get the suite name
             Reporter.extent = new ExtentReports();
 
-            Reporter.setupReport();
+            Reporter.setupReport(suiteName);
 
             isSuiteInitialized = true;
         }

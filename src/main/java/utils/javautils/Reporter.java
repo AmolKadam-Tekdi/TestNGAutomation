@@ -55,17 +55,15 @@ public class Reporter {
 	}*/
 
 
-	public static void setupReport() {
+	public static void setupReport(String suiteName) {
 		logStep("Reports are now getting generated");
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
 
-
 		// Change the parent directory to a temporary location
 		String parentDirectory = "/tmp/reports" + File.separator;
-
 		createDirectory(parentDirectory);
 
-		ExtentSparkReporter report = new ExtentSparkReporter(parentDirectory + "TestSuite.html");
+		ExtentSparkReporter report = new ExtentSparkReporter(parentDirectory + suiteName +".html");
 		report.config().setTheme(Theme.STANDARD);
 
 		extent.attachReporter(report);
