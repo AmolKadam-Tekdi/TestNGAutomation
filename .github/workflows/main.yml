@@ -165,12 +165,14 @@ jobs:
       # Step 6: Deploy Extent Report
       - name: Deploy Extent Report
         if: always()
-        uses: peaceiris/actions-gh-pages@v3  # Ensure you're using the latest version here
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}  # Use the secret created
+          publish_branch: gh-pages
+          publish_dir: target/extent-reports
         env:
-          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: target/extent-reports  # Ensure this path points to where Extent reports are generated
-
+          JAVA_HOME: /opt/hostedtoolcache/Java_Adopt_jdk/16.0.2-7/x64
+          
       # Step 7: Upload Extent Report as Artifact using the latest version (v3)
       - name: Upload Extent Report as Artifact
         if: always()

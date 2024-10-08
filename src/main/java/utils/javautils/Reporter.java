@@ -39,6 +39,8 @@ public class Reporter {
 	public static void setupReport() {
 //		filename = filename + "_" + timestamp;
 
+		logStep("Reports are now getting generated");
+
 		String parentDirectory = System.getProperty("user.dir") + File.separator + "reports"
 				+ File.separator;
 
