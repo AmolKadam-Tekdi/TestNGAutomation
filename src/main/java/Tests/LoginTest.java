@@ -17,9 +17,6 @@ public class LoginTest extends BaseTest {
         LoginPage lp = PageFactory.initElements(driver, LoginPage.class);
         EGLoginPage egl = PageFactory.initElements(driver,EGLoginPage.class);
 
-        setImplicitWait(10, TimeUnit.SECONDS);
-//        waitForInterface(10);
-//        Thread.sleep(2000);
         logStep("Enter Username");
         egl.enterUsername(username);
         assertTrue("Username field is enabled", egl.isEnabled("usernameField"),"Username field is not enablled");

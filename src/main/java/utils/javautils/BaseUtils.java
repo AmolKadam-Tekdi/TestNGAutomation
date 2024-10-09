@@ -239,16 +239,6 @@ public class BaseUtils {
 
     /*Webdriver Wait for element synchronisation*/
 
-    static void impliciteWait(int waitTimeinSeconds) {
-        try
-        {
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(waitTimeinSeconds));
-        }
-        catch (Exception e)
-        {
-            logStep("Exception in implicitWait: " +e.getMessage());
-        }
-    }
 
 
     public static void retryUntilInteractable(WebDriver driver, By locator, Consumer<WebElement> methodToRetry) {
@@ -668,16 +658,15 @@ public class BaseUtils {
             // 1. Wait for document.readyState to be 'complete'
             wait.until(webDriver -> ((JavascriptExecutor) driver)
                     .executeScript("return document.readyState").equals("complete"));
-            logStep("Document is in ready state.");
+//            logStep("Document is in ready state.");
 
-            // 2. Check for any active jQuery AJAX requests (if jQuery is present)
             Boolean isJQueryDefined = (Boolean) ((JavascriptExecutor) driver)
                     .executeScript("return typeof jQuery != 'undefined'");
 
             if (isJQueryDefined) {
                 wait.until(webDriver -> ((JavascriptExecutor) driver)
                         .executeScript("return jQuery.active == 0").equals(true));
-                logStep("All jQuery AJAX requests have completed.");
+//                logStep("All jQuery AJAX requests have completed.");
             }
 
             // 3. Check for Angular (if Angular is present)
@@ -687,15 +676,13 @@ public class BaseUtils {
             if (isAngularDefined) {
                 wait.until(webDriver -> ((JavascriptExecutor) driver)
                         .executeScript("return window.getAllAngularTestabilities().findIndex(x=>!x.isStable()) === -1"));
-                logStep("All Angular tasks are stable and completed.");
+//                logStep("All Angular tasks are stable and completed.");
             }
 
-            // 4. Add any custom JavaScript waiting logic for React or other async tasks (if needed)
             wait.until(webDriver -> ((JavascriptExecutor) driver)
                     .executeScript("return window.performance.timing.loadEventEnd > 0"));
-            logStep("All React or other asynchronous tasks are complete.");
+//            logStep("All React or other asynchronous tasks are complete.");
 
-            // 5. Optional forced sleep as a fallback
             Thread.sleep(2000);  // Adjust the sleep time as necessary
 
             logStep("UI has fully loaded.");

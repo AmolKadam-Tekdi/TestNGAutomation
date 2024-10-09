@@ -1,0 +1,18 @@
+Oct 09, 2024 11:09:03 AM utils.javautils.BaseUtils logStep
+INFO: Enter Username
+Oct 09, 2024 11:09:08 AM utils.javautils.BaseUtils logStep
+INFO: Username field is enabled -- assertTrue(true)
+Oct 09, 2024 11:09:08 AM utils.javautils.BaseUtils logStep
+INFO: Enter password
+Oct 09, 2024 11:09:08 AM utils.javautils.BaseUtils logStep
+INFO: password field is enabled -- assertTrue(true)
+Oct 09, 2024 11:09:08 AM utils.javautils.BaseUtils logStep
+INFO: the user enters the password {string}
+Oct 09, 2024 11:09:09 AM utils.javautils.BaseUtils logStep
+INFO: Click on the Login Button
+Oct 09, 2024 11:09:09 AM utils.javautils.BaseUtils logStep
+INFO: Login Button is enabled -- assertTrue(true)
+Oct 09, 2024 11:09:19 AM utils.javautils.BaseUtils logStep
+INFO: User Logged in successfully -- assertTrue(false)
+Oct 09, 2024 11:09:19 AM utils.javautils.BaseUtils fail
+INFO: User not able to log into the system

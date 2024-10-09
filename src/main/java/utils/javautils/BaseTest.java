@@ -1,14 +1,14 @@
 package utils.javautils;
 
 import com.aventstack.extentreports.ExtentReports;
-import io.cucumber.java.Before;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
-import utils.baseutils.BrowserManager;
+import utils.BrowserManager.BrowserManager;
 import org.testng.ITestContext;
 
 
 import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
 
 public class BaseTest extends BrowserManager
 {
@@ -21,27 +21,41 @@ public class BaseTest extends BrowserManager
 
         if (!isSuiteInitialized) {
             String suiteName = context.getSuite().getName();  // Get the suite name
-            Reporter.extent = new ExtentReports();
-
             Reporter.setupReport(suiteName);
-
             isSuiteInitialized = true;
         }
     }
+
+
 
     @BeforeMethod(alwaysRun = true)
     @Parameters("localOrRemote")
     public void setUpLog(Method method, @Optional("local") String localOrRemote) throws Exception {
         LoggerUtil.setLogFileName(method.getName());
-//        Reporter.setupReport(method.getName());
         Reporter.createTest(method.getName());
         browserRun();
+        long timeout = 10;
+        TimeUnit unit = null;
+        try {
+            setImplicitWait(10, TimeUnit.SECONDS);
+        }
+        catch (Exception e)
+        {
+            driver
+                    .manage()
+                    .timeouts()
+                    .implicitlyWait(timeout, unit == null ? TimeUnit.SECONDS : unit);
+        }
     }
+
+
+
 
     @AfterMethod(alwaysRun = true)
     public void tearDown(ITestResult result) throws Exception {
         logResultStatus(result);
         waitForUi(2);
+        driver.quit();
     }
 
     private void logResultStatus(ITestResult result) throws Exception {

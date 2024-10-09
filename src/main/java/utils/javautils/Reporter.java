@@ -21,26 +21,16 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.TimeZone;
 
-/**
- *
- * This class is responsible for generating and managing test reports using the
- * ExtentReports library.
- *
- *
- *
- */
+
 public class Reporter {
 
 	public static ExtentReports extent;
 	public static ExtentTest test;
 	static String timestamp = new SimpleDateFormat("ddMMyyyy_HHmmss").format(new Date());
 
-//	String suiteName
-
-/*	public static void setupReport() {
-//		filename = filename + "_" + timestamp;
-
-		logStep("Reports are now getting generated");
+/*
+	public static void setupReport(String filename) {
+		filename = filename + "_" + timestamp;
 
 		String parentDirectory = System.getProperty("user.dir") + File.separator + "reports"
 				+ File.separator;
@@ -48,16 +38,18 @@ public class Reporter {
 		createDirectory(parentDirectory);
 
 		ExtentSparkReporter report = new ExtentSparkReporter(
-				parentDirectory +  "TestSuite.html");
+				parentDirectory + File.separator + timestamp + File.separator + filename + ".html");
 		report.config().setTheme(Theme.STANDARD);
-
+		extent = new ExtentReports();
 		extent.attachReporter(report);
-	}*/
+	}
+*/
 
 
 	public static void setupReport(String suiteName) {
 		logStep("Reports are now getting generated");
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
+		Reporter.extent = new ExtentReports();
 
 		// Change the parent directory to a temporary location
 		String parentDirectory = "/tmp/reports" + File.separator;
