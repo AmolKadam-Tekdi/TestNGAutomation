@@ -181,15 +181,15 @@ jobs:
       # Step 6: Run each suite and generate separate reports in different directories
       - name: Run UI-Automation tests for Suite 1
         run: |
-          mvn test -DsuiteXmlFile=suite1.xml -Dtestng.output.dir=/tmp/reports/suite1
+            mvn test -DsuiteXmlFile=suite1.xml -Dtestng.output.dir=/tmp/reports/suite1 -Dreport.path=/tmp/reports/suite1
 
       - name: Run UI-Automation tests for Suite 2
         run: |
-          mvn test -DsuiteXmlFile=suite2.xml -Dtestng.output.dir=/tmp/reports/suite2
+           mvn test -DsuiteXmlFile=suite2.xml -Dtestng.output.dir=/tmp/reports/suite2 -Dreport.path=/tmp/reports/suite2
 
       - name: Run UI-Automation tests for TestNG default suite
         run: |
-          mvn test -DsuiteXmlFile=testng.xml -Dtestng.output.dir=/tmp/reports/testng
+            mvn test -DsuiteXmlFile=testng.xml -Dtestng.output.dir=/tmp/reports/testng -Dreport.path=/tmp/reports/testng
 
       # Step 7: List generated reports for debugging
       - name: List generated reports
