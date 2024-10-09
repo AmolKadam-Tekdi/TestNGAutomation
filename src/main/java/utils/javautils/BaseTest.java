@@ -10,6 +10,8 @@ import org.testng.ITestContext;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
+import static utils.javautils.Reporter.extent;
+
 public class BaseTest extends BrowserManager
 {
 
@@ -19,6 +21,7 @@ public class BaseTest extends BrowserManager
     public void setUpSuite(ITestContext context) throws Exception {
         logStep("Current working directory: " + System.getProperty("user.dir"));
         Reporter.extent = new ExtentReports();
+
         if (!isSuiteInitialized) {
             String suiteName = context.getSuite().getName();  // Get the suite name
             Reporter.setupReport(suiteName);
@@ -31,8 +34,9 @@ public class BaseTest extends BrowserManager
     @BeforeMethod(alwaysRun = true)
     @Parameters("localOrRemote")
     public void setUpLog(Method method, @Optional("local") String localOrRemote) throws Exception {
+        Reporter.test = extent.createTest(method.getName());
+
         LoggerUtil.setLogFileName(method.getName());
-        Reporter.createTest(method.getName());
         browserRun();
         long timeout = 10;
         TimeUnit unit = null;
