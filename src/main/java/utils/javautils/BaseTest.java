@@ -18,7 +18,7 @@ public class BaseTest extends BrowserManager
     @BeforeSuite
     public void setUpSuite(ITestContext context) throws Exception {
         logStep("Current working directory: " + System.getProperty("user.dir"));
-
+        Reporter.extent = new ExtentReports();
         if (!isSuiteInitialized) {
             String suiteName = context.getSuite().getName();  // Get the suite name
             Reporter.setupReport(suiteName);

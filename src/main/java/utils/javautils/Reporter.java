@@ -49,7 +49,6 @@ public class Reporter {
 	public static void setupReport(String suiteName) {
 		logStep("Reports are now getting generated");
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
-		Reporter.extent = new ExtentReports();
 
 		// Change the parent directory to a temporary location
 		String parentDirectory = "/tmp/reports" + File.separator;
