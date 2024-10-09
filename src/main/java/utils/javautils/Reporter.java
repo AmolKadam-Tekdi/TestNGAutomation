@@ -51,10 +51,12 @@ public class Reporter {
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
 
 		// Change the parent directory to a temporary location
-		String parentDirectory = "/tmp/reports" + File.separator;
+		String parentDirectory = "/tmp/reports/" + File.separator;
 		createDirectory(parentDirectory);
 
+//		ExtentSparkReporter report = new ExtentSparkReporter(parentDirectory + suiteName +".html");
 		ExtentSparkReporter report = new ExtentSparkReporter(parentDirectory + suiteName +".html");
+
 		report.config().setTheme(Theme.STANDARD);
 
 		extent.attachReporter(report);
