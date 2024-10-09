@@ -195,13 +195,21 @@ jobs:
       - name: List generated reports
         run: |
           echo "Listing Suite 1 reports:"
-          ls -R /tmp/reports/suite1
+          ls -R /tmp/reports/suite1 || echo "No reports found for Suite 1"
           echo "Listing Suite 2 reports:"
-          ls -R /tmp/reports/suite2
+          ls -R /tmp/reports/suite2 || echo "No reports found for Suite 2"
           echo "Listing TestNG reports:"
-          ls -R /tmp/reports/testng
+          ls -R /tmp/reports/testng || echo "No reports found for TestNG"
 
-      # Step 8: Send email with each suite's report attached separately
+      # Step 8: Upload generated reports (for verification)
+      - name: Upload all generated reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: all-reports
+          path: /tmp/reports/**/*
+
+      # Step 9: Send email with Extent Reports (multiple attachments)
       - name: Send email with Extent Reports
         if: always()
         uses: dawidd6/action-send-mail@v3
@@ -223,4 +231,6 @@ jobs:
           to: amol.kadam@tekditechnologies.com, another.email@example.com, third.email@example.com
           from: CI System <testngautomationtest@gmail.com>
           attachments: |
-            /tmp/reports/suite1/*.
+            /tmp/reports/suite1/*.html,
+            /tmp/reports/suite2/*.html,
+            /tmp/reports/testng/*.html
